@@ -47,11 +47,14 @@ func (log *Log) ReadAll() ([]Entry, error) {
 	text := string(content)
 	lines := strings.Split(text, "\n")
 	for _, line := range lines {
-		parsedLine := strings.Split(line, "|")
+		parsedLine := strings.Split(line, DELIMITER)
 		if len(parsedLine) < 2 {
 			continue
 		}
 		cmd := parsedLine[0]
+		if cmd != DELETE_COMMAND && cmd != SET_COMMAND && cmd != GET_COMMAND {
+			continue
+		}
 		key := parsedLine[1]
 		value := ""
 		if len(parsedLine) == 3 {
